@@ -7,3 +7,5 @@ deploy:
 redeploy:
 	kubectl delete ing/task-ingress
 	helmfile sync
+destroy:
+	kind delete cluster -n via-cluster

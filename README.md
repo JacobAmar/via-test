@@ -4,5 +4,8 @@
 # to run the project pleas run make at the root of the repository
 
 ```bash
+# to install everything:
 make
+# to delete everything
+make destroy
 ```
