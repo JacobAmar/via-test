@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: task-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.org/rewrites: "serviceName=service1-service rewrite=/;serviceName=service2-service rewrite=/"
+spec:
+  ingressClassName: nginx
+  rules: 
+  - host: "127.0.0.1.nip.io"
+    http:
+      paths:
+      {{- range $key,$value := .Values.applications }}
+      - path: /{{$key}}/
+        pathType: Prefix
+        backend:
+          service:
+            name: {{$key}}-service
+            port:
+              number: {{ $value.service.port }}
+      {{- end }}

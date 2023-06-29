@@ -1,0 +1,18 @@
+{{ range $key,$value := .Values.applications }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{$key}}-cm
+data:
+  index.html: |
+      <!doctype html>
+      <html>
+        <head>
+          <title>This is the title of the {{ $key }} application!</title>
+        </head>
+        <body>
+          <p>This is the body of the {{ $key }} application!</p>
+        </body>
+      </html>
+{{ end }}  

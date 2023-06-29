@@ -1,0 +1,15 @@
+{{ range $key,$value := .Values.applications }}
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ $key }}-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ $key }}-deployment
+  minReplicas: {{ $value.minReplicas }}
+  maxReplicas: {{ $value.maxReplicas }}
+  metrics: {{ toYaml $value.metrics | nindent 4 }}
+{{ end }}

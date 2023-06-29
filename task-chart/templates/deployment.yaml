@@ -1,0 +1,31 @@
+{{ range $key,$value := .Values.applications }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $key }}-deployment
+  labels:
+    app: {{ $key }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ $key }}
+  template:
+    metadata:
+      labels:
+        app: {{ $key }}
+    spec:
+      containers:
+      - name: {{ $key }}
+        image: {{ $.Values.image }}
+        resources: {{ toYaml $value.resources | nindent 12 }}
+        ports:
+        - containerPort: {{ $value.port }}
+        volumeMounts:
+          - name: config-volume
+            mountPath: /usr/local/apache2/htdocs
+      volumes:
+        - name: config-volume
+          configMap:
+            name: {{$key}}-cm
+{{ end }}

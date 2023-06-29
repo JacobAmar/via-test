@@ -1,0 +1,26 @@
+repositories:
+ - name: nginx
+   url: https://helm.nginx.com/stable
+ - name: metrics-server
+   url: https://kubernetes-sigs.github.io/metrics-server
+
+releases:
+- name: nginx-ingress
+  namespace: nginx-ingress
+  chart: nginx/nginx-ingress
+  version: 0.18.0
+  values:
+    - ingress/values.yaml
+
+- name: metrics-server
+  namespace: metrics-server
+  chart: metrics-server/metrics-server
+  version: 3.10.0
+
+- name: task-chart
+  namespace: default
+  chart: task-chart
+  wait: true
+  needs:
+  - nginx-ingress/nginx-ingress
+  - metrics-server/metrics-server

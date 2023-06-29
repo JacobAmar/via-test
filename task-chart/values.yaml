@@ -1,0 +1,44 @@
+image: httpd:2.4.57-alpine3.18
+applications:
+  service1:
+    replicas: 1
+    port: 80
+    service:
+      port: 9375
+    minReplicas: 1
+    maxReplicas: 10
+    resources:
+      requests:
+        memory: "64Mi"
+        cpu: "250m"
+      limits:
+        memory: "128Mi"
+        cpu: "500m"
+    metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 80
+  service2:
+    replicas: 1
+    port: 80
+    service:
+      port: 9377
+    minReplicas: 1
+    maxReplicas: 10
+    resources:
+      requests:
+        memory: "64Mi"
+        cpu: "250m"
+      limits:
+        memory: "128Mi"
+        cpu: "500m"
+    metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 80
